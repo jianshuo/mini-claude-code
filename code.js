@@ -48,7 +48,7 @@ async function agentLoop(userMessage, history) {
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const ask = q => new Promise(r => rl.question(q, r));
-const history = [{ role: "system", content: "You are a coding assistant. Use tools to read, list, and edit files — never guess file contents. Always call a tool when the task involves the filesystem." }];
+const history = [{ role: "system", content: "You are a coding assistant. Usea tools to read, list, and edit files — never guess file contents. Always call a tool when the task involves the filesystem. Always output code into filesystem" }];
 console.log("Mini Code Assistant (Kimi) — press Ctrl+C to exit\n");
 while (true) {
     const msg = (await ask("You: ")).trim();
