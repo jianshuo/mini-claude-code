@@ -11,15 +11,15 @@ const fn = (name, desc, props, req = []) => ({
 });
 
 const TOOLS = [
-    fn("read_file",  "Read a file.",               { path: { type: "string" } },                               ["path"]),
+    fn("read_file", "Read a file.", { path: { type: "string" } }, ["path"]),
     fn("list_files", "List files in a directory.", { path: { type: "string" } }),
-    fn("edit_file",  "Write content to a file.",   { path: { type: "string" }, content: { type: "string" } }, ["path", "content"]),
+    fn("edit_file", "Write content to a file.", { path: { type: "string" }, content: { type: "string" } }, ["path", "content"]),
 ];
 
 function runTool(name, input) {
     try {
-        if (name === "read_file")  return fs.readFileSync(input.path, "utf8");
-        if (name === "list_files") return fs.readdirSync(input.path ?? ".").sort().join("\n");
+        if (name === "read_file") return fs.readFileSync(input.path, "utf8");
+        if (name === "list_files") return fs.readdirSync(input.path ? ? ".").sort().join("\n");
         if (name === "edit_file") {
             fs.mkdirSync(path.dirname(path.resolve(input.path)), { recursive: true });
             fs.writeFileSync(input.path, input.content);
@@ -35,7 +35,7 @@ async function agentLoop(userMessage, history) {
         const msg = choices[0].message;
         history.push(msg);
         if (msg.content) console.log(`\nAssistant: ${msg.content}`);
-        if (!msg.tool_calls?.length) return;
+        if (!msg.tool_calls ? .length) return;
         for (const tc of msg.tool_calls) {
             const input = JSON.parse(tc.function.arguments);
             console.log(`  → ${tc.function.name}(${tc.function.arguments})`);
@@ -54,3 +54,8 @@ while (true) {
     const msg = (await ask("You: ")).trim();
     if (msg) await agentLoop(msg, history);
 }
+
+
+[
+    { type: 'function', function: { name: 'read_file', description: 'Read a file.', parameters: [Object] } }
+]
